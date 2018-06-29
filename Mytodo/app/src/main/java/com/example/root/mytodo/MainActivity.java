@@ -56,6 +56,7 @@ public class MainActivity extends AppCompatActivity {
                 String itempos = lv.getItemAtPosition(i).toString();
                 intent.putExtra("textedit", itempos);
                 startActivityForResult(intent, REQUEST_CODE);
+
             }
         });
     }
@@ -64,6 +65,7 @@ public class MainActivity extends AppCompatActivity {
         EditText etNewItem = (EditText) findViewById(R.id.et);
         String itemtext = etNewItem.getText().toString();
         itemsAdapter.add(itemtext);
+        itemsAdapter.notifyDataSetChanged();
         etNewItem.setText("");
         writeItems();
     }
@@ -89,8 +91,15 @@ public class MainActivity extends AppCompatActivity {
     }
 
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+
         if (resultCode == RESULT_OK && requestCode == REQUEST_CODE) {
             String theitem = data.getExtras().getString("editte");
+            int positem = lv.getCheckedItemPosition();
+            if(!items.isEmpty() && items.lenght()>0){
+                itemsAdapter.remove(items.get(positem));
+                itemsAdapter.insert(theitem, positem);
+                itemsAdapter.notifyDataSetChanged();
+            }
             Toast.makeText(this, theitem, Toast.LENGTH_SHORT).show();
         }
     }
