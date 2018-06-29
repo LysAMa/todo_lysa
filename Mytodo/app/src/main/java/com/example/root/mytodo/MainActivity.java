@@ -95,10 +95,14 @@ public class MainActivity extends AppCompatActivity {
         if (resultCode == RESULT_OK && requestCode == REQUEST_CODE) {
             String theitem = data.getExtras().getString("editte");
             int positem = lv.getCheckedItemPosition();
-            if(!items.isEmpty() && items.lenght()>0){
-                itemsAdapter.remove(items.get(positem));
-                itemsAdapter.insert(theitem, positem);
-                itemsAdapter.notifyDataSetChanged();
+            try{
+                if(!theitem.isEmpty() && theitem.length()>0){
+                    itemsAdapter.remove(items.get(positem));
+                    itemsAdapter.insert(theitem, positem);
+                    itemsAdapter.notifyDataSetChanged();
+                }
+            }catch (Exception e){
+                e.printStackTrace();
             }
             Toast.makeText(this, theitem, Toast.LENGTH_SHORT).show();
         }
