@@ -11,6 +11,7 @@ public class EditItemActivity extends AppCompatActivity {
 
     EditText editt;
     Button btn2;
+    int position;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -19,14 +20,15 @@ public class EditItemActivity extends AppCompatActivity {
         editt = (EditText)findViewById(R.id.et2) ;
         String valfromMain = getIntent().getStringExtra("textedit");
         editt.setText(valfromMain);
-
-
-
+        if (getIntent().getExtras() != null){
+            position = getIntent().getIntExtra("pos",0);
+        }
     }
 
     public void onSubmit(View v) {
         Intent data = new Intent();
         data.putExtra("editte", editt.getText().toString());
+        data.putExtra("position", position);
         setResult(RESULT_OK, data);
         finish();
         this.finish();

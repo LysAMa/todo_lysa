@@ -55,6 +55,7 @@ public class MainActivity extends AppCompatActivity {
                 Intent intent =new Intent(MainActivity.this, EditItemActivity.class);
                 String itempos = lv.getItemAtPosition(i).toString();
                 intent.putExtra("textedit", itempos);
+                intent.putExtra("pos", i);
                 startActivityForResult(intent, REQUEST_CODE);
 
             }
@@ -94,12 +95,14 @@ public class MainActivity extends AppCompatActivity {
 
         if (resultCode == RESULT_OK && requestCode == REQUEST_CODE) {
             String theitem = data.getExtras().getString("editte");
-            int positem = lv.getCheckedItemPosition();
+            int pos = data.getExtras().getInt("position");
             try{
                 if(!theitem.isEmpty() && theitem.length()>0){
-                    itemsAdapter.remove(items.get(positem));
-                    itemsAdapter.insert(theitem, positem);
-                    itemsAdapter.notifyDataSetChanged();
+
+                    items.set(pos, theitem);
+                    writeItems();
+                    lv.invalidate();
+                    lv.setAdapter(itemsAdapter);
                 }
             }catch (Exception e){
                 e.printStackTrace();
